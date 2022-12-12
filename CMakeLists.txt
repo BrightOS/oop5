@@ -3,4 +3,4 @@ project(oop5)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(oop5 main.cpp first.cpp first.h second.h second.cpp)
+add_executable(oop5 main.cpp first.cpp first.h second.h second.cpp third.cpp fourth.cpp third.h fourth.h)

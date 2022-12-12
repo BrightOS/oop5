@@ -3,84 +3,84 @@
 
 using namespace std;
 
-class Animal {
+class FirstAnimal {
 protected:
     int age = 0;
 public:
-    Animal() {
-        cout << "Animal()" << endl;
+    FirstAnimal() {
+        cout << "FirstAnimal()" << endl;
     }
 
-    virtual ~Animal() { //виртуальный деструктор
-        cout << "~Animal()" << endl;
+    virtual ~FirstAnimal() { //виртуальный деструктор
+        cout << "~FirstAnimal()" << endl;
     }
 
     void firstMethod() {
         age *= 10;
-        cout << "Animal::firstMethod\tage = " << age << endl;
+        cout << "FirstAnimal::firstMethod\tage = " << age << endl;
     }
 
     virtual void secondMethod() {
         age = 10;
-        cout << "Animal::secondMethod\tage = " << age << endl;
+        cout << "FirstAnimal::secondMethod\tage = " << age << endl;
     }
 
     void firstSound() {
-        cout << "Sound of Animal" << endl;
+        cout << "Sound of FirstAnimal" << endl;
     }
 
     virtual void secondSound() { // Виртуальный метод, который далее перекрывается
-        cout << "Virtual sound of Animal" << endl;
+        cout << "Virtual sound of FirstAnimal" << endl;
     }
 };
 
-class Cat : public Animal {
+class FirstCat : public FirstAnimal {
 public:
-    Cat() {
-        cout << "Cat()" << endl;
+    FirstCat() {
+        cout << "FirstCat()" << endl;
     }
 
-    ~Cat() {
-        cout << "~Cat()" << endl;
+    ~FirstCat() {
+        cout << "~FirstCat()" << endl;
     }
 
     void secondMethod() {
         age = 1;
-        cout << "Cat::secondMethod\t" << age << endl;
+        cout << "FirstCat::secondMethod\t" << age << endl;
     }
 
     void firstSound() {
-        cout << "Sound of Cat" << endl;
+        cout << "Sound of FirstCat" << endl;
     }
 
     void secondSound() override {
-        cout << "override secondSound of Cat" << endl;
+        cout << "override secondSound of FirstCat" << endl;
     }
 
 };
 
 void invokeFirstProgram() {
-    Animal *cat1 = new Cat();
+    FirstAnimal *cat1 = new FirstCat();
     delete cat1;
     cout << endl;
 
     // что если метод 2 в Базовом классе virtual/ не virtual
-    Animal *cat2 = new Cat();
+    FirstAnimal *cat2 = new FirstCat();
     cat2->firstMethod(); // не virtual
     cat2->secondMethod(); // virtual
     cout << endl;
 
     // обращение через указатель на базовый класс/класс наследника (не virtual)
-    Animal *cat3 = new Cat();
+    FirstAnimal *cat3 = new FirstCat();
     cat3->firstSound();
-    Cat *cat4 = new Cat();
+    FirstCat *cat4 = new FirstCat();
     cat4->firstSound();
     cout << endl;
 
     // Обращение через указатель на базовый класс/класс наследника (virtual)
-    Animal *cat5 = new Cat();
+    FirstAnimal *cat5 = new FirstCat();
     cat5->secondSound();
-    Cat *cat6 = new Cat();
+    FirstCat *cat6 = new FirstCat();
     cat6->secondSound();
     cout << endl;
 }

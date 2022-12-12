@@ -1,20 +1,11 @@
 #include <iostream>
 #include <windows.h>
 #include "first.h"
+#include "second.h"
+#include "third.h"
+#include "fourth.h"
 
 using namespace std;
-
-void invokeSecondProgram() {
-
-}
-
-void invokeThirdProgram() {
-
-}
-
-void invokeFourthProgram() {
-
-}
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
