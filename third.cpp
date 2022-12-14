@@ -9,6 +9,10 @@ public:
         cout << "Base()" << endl;
     }
 
+    Base(Base const &object) {
+        cout << "Base(object)" << endl;
+    }
+
     Base(Base *object) {
         cout << "Base(* object)" << endl;
     }
@@ -43,52 +47,65 @@ public:
     }
 };
 
-void func1(Base object) { cout << "func1(Base object)" << endl; }
+void func1(Base object) {
+    cout << "func1(Base object)" << endl;
+}
 
-void func2(Base *object) { cout << "func2(Base* object)" << endl; }
+void func2(Base *object) {
+    if (dynamic_cast<Desk *>(object))
+        cout << "func2(Base* object) (Desk as Base)" << endl;
+    else
+        cout << "func2(Base* object)" << endl;
+}
 
-void func3(Base &object) { cout << "func3(Base& object)" << endl; }
+void func3(Base &object) {
+    if (dynamic_cast<Desk *>(&object))
+        cout << "func3(Base& object) (Desk as Base)" << endl;
+    else
+        cout << "func3(Base& object)" << endl;
+}
 
-//Динамические объекты внутри функций
-Base Output_1() {
-    cout << "Base Output_1()" << endl;
+// Динамические объекты внутри функций
+Base output1() {
+    cout << "Base output1()" << endl;
     Base *object = new Base();
     return *object;
 }
 
-Base *Output_2() {
-    cout << "Base* Output_2()" << endl;
+Base *output2() {
+    cout << "Base* output2()" << endl;
     Base *object = new Base();
     return object;
 }
 
-Base &Output_3() {
-    cout << "Base& Output_3()" << endl;
+Base &output3() {
+    cout << "Base& output3()" << endl;
     Base *object = new Base();
     return *object;
 }
 
-//Статические объекты внутри функций
-Base Output_4() {
-    cout << "Base Output_4()" << endl;
+// Статические объекты внутри функций
+Base output4() {
+    cout << "Base output4()" << endl;
     Base object;
     return object;
 }
 
-Base *Output_5() {
-    cout << "Base* Output_5()" << endl;
+Base *output5() {
+    cout << "Base* output5()" << endl;
     Base object;
     return &object;
 }
 
-Base &Output_6() {
-    cout << "Base& Output_6()" << endl;
+Base &output6() {
+    cout << "Base& output6()" << endl;
     Base object;
     return object;
 }
 
 void invokeThirdProgram() {
     cout << "----------Смотрим на передачу в функцию для Base:----------" << endl;
+
     Base pb1;
     cout << "-----------------------" << endl;
     func1(pb1); // В данном случае создается копия b1 и передается в func1
@@ -111,61 +128,28 @@ void invokeThirdProgram() {
     cout << endl;
 
     cout << "----------Смотрим на возвращение из функции для Base:----------" << endl;
-    Base baza1;
-    baza1 = Output_1(); // Видим, что динамический объект из func1  НЕ уничтожился" << endl;
+    Base baza1 = output1(); // Видим, что динамический объект из func1 НЕ уничтожился;
 
     cout << "------------------------" << endl;
-    Base baza2 = Output_2(); // никакого копирования и прочего прочего, все отлично
+    Base baza2 = output2(); // никакого копирования, все отлично
 
     cout << "-----------------------" << endl;
-    Base &baza3 = Output_3(); // в данном случае проблема в том, что baza3 - это ссылка, и ее удаление не удалит сам объект
-    delete &baza3;
+    Base &baza3 = output3(); // в данном случае проблема в том, что baza3 - это ссылка, и ее удаление не удалит сам объект
+    delete &baza3; // Пробуем удалить в первый раз
+    delete &baza3; // Удаляем во второй
+    delete &baza3; // В третий
+    delete &baza3; // И всё время удаляются копии
 
     cout << "----------Возвращаем статические объекты:----------" << endl;
-    Base baza4;
-    baza4 = Output_4(); // Видим огромное количество созданий и удалений объектов
+    Base baza4 = output4(); // На удивление всё проходит максимально гладко
 
     cout << "------------------------" << endl;
-    Base *baza5 = Output_5(); // Тут мы обратимся к несуществующей памяти(в процессе копирования), следовательно, краш
-    baza5->Crush();
-    delete baza5; // именно тут мы попытаемся удалить объект, которого нет
+    Base *baza5 = output5(); // Тут мы обратимся к несуществующей памяти(в процессе копирования), следовательно...
+    delete baza5; // Ничего не произойдёт
 
     cout << "-----------------------" << endl;
-    Base &baza6 = Output_6(); // объект не скопируется
-    delete& baza6; // И вновь, пытаемся копировать уже удаленный объект
-
-
-    cout << endl;
-
-    cout << "----------Ниже смотрим на возвращение из функции для Desk:----------" << endl;
-    Base *desk1 = new Desk();
-    *desk1 = Output_1(); // Скопировал, но не удалил динамический объект
-    delete desk1;
-
-    cout << "-----------------------" << endl;
-    Base *desk2 = new Desk();
-    desk2 = Output_2(); // Скопировал, но динамический объект из функции НЕ удалился
-    delete desk2;
-
-    cout << "-----------------------" << endl;
-    Base *desk3 = new Desk();
-    *desk3 = Output_3(); // передали Адресс созданного в функции объекта, но старый так и остался в стеке;
-    delete desk3;
-
-    cout << "----------Возвращаем статические объекты:----------" << endl;
-    Base *desk4 = new Desk();
-    *desk4 = Output_4(); // Объекты удалились и передались, оставив за собой след из кучи созданий/удалений
-    delete desk4;
-
-    cout << "-----------------------" << endl;
-    Base *desk5 = new Desk();
-    desk5 = Output_5(); // Объект в функции удалился до копирования
-    delete desk5;
-
-    cout << "-----------------------" << endl;
-    Base *desk6 = new Desk();
-    *desk6 = Output_6(); // Объект в функции удалился до копирования
-    delete desk6; // удалить можем, ибо работает как бы "присваивание по ссылке"
+    Base &baza6 = output6(); // Объект создастся и удалится в функции, вернётся адрес
+    delete &baza6; // Ничего не произойдёт
 
     cout << "----------Ниже удалятся статические объекты: baza1, baza2, baza4, pd1, pb1----------" << endl;
 }

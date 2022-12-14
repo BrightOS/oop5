@@ -149,8 +149,9 @@ void invokeSecondProgram() {
     }
 
     for (auto & i : zoo) {
-        if (dynamic_cast<Cat *>(i))
-            dynamic_cast<Cat *>(i)->cat_method();
+        auto n = dynamic_cast<Cat *>(i);
+        if (n)
+            n->cat_method();
         else if (dynamic_cast<Dog *>(i))
             dynamic_cast<Dog *>(i)->dog_method();
         else if (dynamic_cast<Manul *>(i))

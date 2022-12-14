@@ -44,9 +44,9 @@ public:
         cout << "~FirstCat()" << endl;
     }
 
-    void secondMethod() {
+    void secondMethod() override {
         age = 1;
-        cout << "FirstCat::secondMethod\t" << age << endl;
+        cout << "FirstCat::secondMethod   \tage = " << age << endl;
     }
 
     void firstSound() {
@@ -64,13 +64,13 @@ void invokeFirstProgram() {
     delete cat1;
     cout << endl;
 
-    // что если метод 2 в Базовом классе virtual/ не virtual
+    // Что если метод 2 в Базовом классе virtual / не virtual
     FirstAnimal *cat2 = new FirstCat();
-    cat2->firstMethod(); // не virtual
+    cat2->firstMethod(); // Не virtual
     cat2->secondMethod(); // virtual
     cout << endl;
 
-    // обращение через указатель на базовый класс/класс наследника (не virtual)
+    // Обращение через указатель на базовый класс/класс наследника (не virtual)
     FirstAnimal *cat3 = new FirstCat();
     cat3->firstSound();
     FirstCat *cat4 = new FirstCat();
@@ -83,4 +83,10 @@ void invokeFirstProgram() {
     FirstCat *cat6 = new FirstCat();
     cat6->secondSound();
     cout << endl;
+
+    delete cat2;
+    delete cat3;
+    delete cat4;
+    delete cat5;
+    delete cat6;
 }

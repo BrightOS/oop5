@@ -13,12 +13,12 @@ int main() {
     int n;
     cin >> n;
     if (n == 1)
-        invokeFirstProgram();
+        invokeFirstProgram(); // virtual / не virtual
     else if (n == 2)
-        invokeSecondProgram();
+        invokeSecondProgram(); // static_cast / dynamic_cast
     else if (n == 3)
-        invokeThirdProgram();
+        invokeThirdProgram(); // полиморфизм при работе с функциями
     else
-        invokeFourthProgram();
+        invokeFourthProgram(); // unique_ptr / shared_ptr
     return 0;
 }
